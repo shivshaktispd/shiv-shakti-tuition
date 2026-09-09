@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staff - Shiv Shakti Tuition</title>
+  <link rel="icon" type="image/png" href="./logo.png">
+<link rel="apple-touch-icon" href="./logo.png">
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet" />
+  <link rel="stylesheet" href="./style.css">
+  <style>
+    body { background-color: var(--bg-color, #f8fafc); font-family: 'Inter', sans-serif; color: var(--text-main, #1e293b); padding: 20px; height: auto !important; overflow: auto !important; display: block !important; }
+    .staff-page { max-width: 900px; margin: auto; }
+    .brand-title { font-size: 13px; font-weight: 800; color: #f59e0b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+    .staff-header { display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 24px; }
+    .staff-header h1 { margin: 0; font-size: 24px; color: var(--primary, #0a1d3f); display: flex; align-items: center; gap: 8px; }
+    .staff-header p { margin: 4px 0 0; color: var(--text-muted, #64748b); font-size: 14px; }
+    .add-staff-btn { border: none; padding: 12px 20px; border-radius: 10px; background: var(--primary, #0a1d3f); color: white; cursor: pointer; font-weight: 600; font-size: 15px; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 6px -1px rgba(10,29,63,0.15); transition: 0.2s; }
+    .add-staff-btn:hover { background: #163262; }
+    .staff-card { background: white; border: 1px solid var(--border, #e2e8f0); border-radius: 14px; padding: 20px; margin-bottom: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); transition: 0.2s; }
+    .staff-row { display: flex; align-items: center; justify-content: space-between; gap: 15px; }
+    .staff-info { display: flex; align-items: center; gap: 16px; }
+    .staff-avatar { width: 52px; height: 52px; border-radius: 50%; background: #e0e7ff; color: var(--primary, #0a1d3f); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 20px; border: 2px solid #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .staff-name { font-weight: 700; font-size: 17px; color: var(--primary, #0a1d3f); }
+    .staff-id { color: var(--text-muted, #64748b); font-size: 13px; margin-top: 3px; }
+    .role-badge, .status-badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-right: 6px; margin-top: 6px; }
+    .role-badge { background: #e0e7ff; color: #4338ca; }
+    .status-badge { background: #ecfdf5; color: #047857; }
+    .status-badge.disabled { background: #fef2f2; color: #b91c1c; }
+    .staff-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .staff-actions button { border: 1px solid var(--border, #cbd5e1); background: white; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--text-main); display: flex; align-items: center; gap: 5px; transition: 0.2s; }
+    .staff-actions button:hover { background: #f8fafc; }
+    .modal { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); z-index: 99999; padding: 20px; backdrop-filter: blur(4px); overflow-y: auto; }
+    .modal-box { background: white; max-width: 520px; margin: 40px auto; border-radius: 16px; padding: 28px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
+    .modal-box h2 { margin-top: 0; color: var(--primary, #0a1d3f); font-size: 20px; display: flex; align-items: center; gap: 8px; margin-bottom: 20px; }
+    .field { margin-bottom: 16px; }
+    .field label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: var(--text-muted, #64748b); }
+    .field input, .field select { width: 100%; padding: 12px; border: 1px solid var(--border, #cbd5e1); border-radius: 8px; font-size: 15px; font-family: 'Inter', sans-serif; outline: none; transition: 0.2s; }
+    .field input:focus, .field select:focus { border-color: var(--primary); }
+    .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px; }
+    .modal-actions button { padding: 12px 20px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; }
+    .close-modal-btn { background: #f1f5f9; border: none; color: var(--text-main); }
+    .save-btn { background: var(--primary, #0a1d3f); color: white; border: none !important; }
+    .save-btn:hover { background: #163262; }
+    .empty-staff { text-align: center; padding: 50px 20px; color: var(--text-muted, #64748b); border: 1px dashed var(--border); border-radius: 12px; background: white; }
+    @media (max-width: 650px) { .staff-header, .staff-row { align-items: flex-start; flex-direction: column; } .staff-actions { width: 100%; } .staff-actions button { flex: 1; justify-content: center; } }
+  </style>
+</head>
+
+<body>
+  <main class="staff-page">
+    <div class="brand-title">Shiv Shakti Tuition</div>
+    <header class="staff-header">
+      <div>
+        <h1><span class="material-symbols-rounded">group</span> Staff / Teachers</h1>
+        <p>Manage Admin and Teacher accounts securely</p>
+      </div>
+      <button class="add-staff-btn" id="addStaffBtn">
+        <span class="material-symbols-rounded">person_add</span> Add Staff
+      </button>
+    </header>
+    <section id="staffList">
+      <div class="empty-staff">
+        <span class="material-symbols-rounded spin-icon" style="font-size: 32px; color: var(--primary);">autorenew</span>
+        <p style="margin-top: 10px;">Loading staff...</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ADD STAFF MODAL -->
+  <div class="modal" id="staffModal">
+    <div class="modal-box">
+      <h2><span class="material-symbols-rounded">person_add</span> Add New Staff</h2>
+      <form id="staffForm">
+        <div class="field"><label>Staff Name *</label><input type="text" id="staffName" required></div>
+        <div class="field"><label>Staff ID *</label><input type="text" id="staffId" required></div>
+        <div class="field"><label>Password *</label><input type="password" id="staffPassword" required></div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+          <div class="field"><label>Role</label><select id="staffRole" required><option value="teacher">Teacher</option><option value="admin">Admin</option></select></div>
+          <div class="field"><label>Status</label><select id="staffStatus"><option value="active">Active</option><option value="disabled">Disabled</option></select></div>
+        </div>
+        <div class="field"><label>Mobile Number</label><input type="tel" id="staffMobile"></div>
+
+        <!-- NEW: Full Permissions Checkboxes for Add -->
+        <div class="field" style="background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid var(--border);">
+          <label style="color: var(--primary); font-weight: 700; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px; margin-bottom: 10px;">Staff Permissions</label>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <label style="display: flex; align-items: center; gap: 6px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="permStudents" checked> Students</label>
+            <label style="display: flex; align-items: center; gap: 6px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="permAttendance" checked> Attendance</label>
+            <label style="display: flex; align-items: center; gap: 6px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="permFees"> Fees</label>
+            <label style="display: flex; align-items: center; gap: 6px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="permReports"> Reports</label>
+            <label style="display: flex; align-items: center; gap: 6px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="permStaff"> Staff</label>
+            <label style="display: flex; align-items: center; gap: 6px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="permSettings"> Settings</label>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="close-modal-btn" id="closeStaffModal">Cancel</button>
+          <button type="submit" class="save-btn">Save Staff</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- EDIT STAFF MODAL -->
+  <div class="modal" id="editStaffModal">
+    <div class="modal-box">
+      <h2><span class="material-symbols-rounded">edit</span> Edit Staff Details</h2>
+      <form id="editStaffForm">
+        <input type="hidden" id="editStaffDocId">
+        <div class="field"><label>Staff Name *</label><input type="text" id="editStaffName" required></div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+          <div class="field"><label>Role</label><select id="editStaffRole" required><option value="teacher">Teacher</option><option value="admin">Admin</option></select></div>
+          <div class="field"><label>Status</label><select id="editStaffStatus"><option value="active">Active</option><option value="disabled">Disabled</option></select></div>
+        </div>
+        <div class="field"><label>Mobile Number</label><input type="tel" id="editStaffMobile"></div>
+
+        <!-- NEW: Full Permissions Checkboxes for Edit -->
+        <div class="field" style="background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid var(--border);">
+          <label style="color: var(--primary); font-weight: 700; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px; margin-bottom: 10px;">Staff Permissions</label>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <label style="display: flex; align-items: center; gap: 6px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="editPermStudents"> Students</label>
+            <label style="display: flex; align-items: center; gap: 6px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="editPermAttendance"> Attendance</label>
+            <label style="display: flex; align-items: center; gap: 6px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="editPermFees"> Fees</label>
+            <label style="display: flex; align-items: center; gap: 6px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="editPermReports"> Reports</label>
+            <label style="display: flex; align-items: center; gap: 6px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="editPermStaff"> Staff</label>
+            <label style="display: flex; align-items: center; gap: 6px; font-weight: normal; cursor: pointer;"><input type="checkbox" id="editPermSettings"> Settings</label>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="close-modal-btn" onclick="document.getElementById('editStaffModal').style.display='none'">Cancel</button>
+          <button type="submit" class="save-btn">Update Staff</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="./firebase.js"></script>
+  <script type="module" src="./staff.js"></script>
+</body>
+</html>

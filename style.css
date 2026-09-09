@@ -1,0 +1,680 @@
+/* ==========================================
+   SHIV SHAKTI TUITION - MAIN STYLESHEET (Edu-Pro Theme)
+   ========================================== */
+
+:root {
+  --primary: #0a1d3f;
+  --primary-hover: #163262;
+  --accent: #f59e0b;
+  --bg-color: #f8fafc;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --success: #10b981;
+  --danger: #ef4444;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* App Layout */
+.app {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar & Mobile Fixes */
+.sidebar {
+  width: 260px;
+  background: #ffffff;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  transition: transform 0.3s ease;
+}
+
+.main {
+  flex: 1;
+  margin-left: 260px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+  .sidebar.open {
+    transform: translateX(0);
+  }
+  .main {
+    margin-left: 0;
+  }
+}
+
+/* Topbar & Overlap Fixes */
+.topbar {
+  position: relative;
+  top: 0;
+  z-index: 900;
+  background: #ffffff;
+  border-bottom: 1px solid var(--border);
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mobile-menu {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  color: var(--primary);
+  display: none;
+  margin-right: 12px;
+}
+
+@media (max-width: 768px) {
+  .mobile-menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* Profile Dropdown Overlap Fix */
+.profile-dropdown {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  margin-top: 8px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  min-width: 180px;
+  z-index: 1100;
+}
+
+.profile-dropdown.show {
+  display: block;
+}
+
+.profile-dropdown button {
+  width: 100%;
+  padding: 10px 16px;
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 14px;
+  color: var(--text-main);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.profile-dropdown button:hover {
+  background: #f8fafc;
+}
+.logout-text {
+  color: var(--danger) !important;
+}
+.dropdown-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 4px 0;
+}
+
+/* Brand & Menu Styling */
+.brand {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.brand img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+.brand h2 {
+  font-size: 16px;
+  color: var(--primary);
+}
+.brand span {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.menu {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow-y: auto;
+}
+
+.menu-item {
+  width: 100%;
+  padding: 12px 14px;
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.menu-item:hover, .menu-item.active {
+  background: #e0e7ff;
+  color: var(--primary);
+}
+
+/* Content Area */
+.content {
+  padding: 20px;
+  flex: 1;
+}
+
+/* Compact Dashboard Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: white;
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.stat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.stat-card span {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.stat-card strong {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+/* Welcome Card */
+.welcome-card {
+  background: var(--primary);
+  color: white;
+  padding: 24px;
+  border-radius: 16px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 10px 20px rgba(10,29,63,0.15);
+}
+.welcome-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Quick Actions Grid */
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.quick-card {
+  background: white;
+  border: 1px solid var(--border);
+  padding: 16px;
+  border-radius: 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.quick-card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  transform: translateY(-2px);
+}
+.quick-card strong {
+  font-size: 15px;
+  color: var(--primary);
+}
+.quick-card small {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.section-heading {
+  margin-bottom: 14px;
+}
+.section-heading h2 {
+  font-size: 18px;
+  color: var(--primary);
+}
+.section-heading p {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.empty-card {
+  background: white;
+  border: 1px dashed var(--border);
+  padding: 40px 20px;
+  border-radius: 14px;
+  text-align: center;
+}
+
+/* Trigger Button */
+.profile-trigger {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 8px;
+}
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   PROFESSIONAL DASHBOARD POLISH
+   Added without changing HTML/JavaScript functionality
+   ========================================================= */
+
+/* ---------- Top Header ---------- */
+
+.page-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
+.page-header h1 {
+  margin: 0;
+  font-size: 34px;
+  line-height: 1.08;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.8px;
+}
+
+.page-header p {
+  margin: 3px 0 0;
+  font-size: 16px;
+  line-height: 1.25;
+  color: var(--text-main);
+}
+
+.topbar > div:first-child {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.profile-trigger {
+  min-height: 44px;
+  align-items: center;
+}
+
+.admin-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* ---------- Welcome Card ---------- */
+
+.welcome-card > div:first-child {
+  min-width: 0;
+}
+
+.welcome-card h2 {
+  margin: 4px 0 0;
+  font-size: 34px;
+  line-height: 1.08;
+  font-weight: 800;
+  letter-spacing: -0.6px;
+}
+
+.welcome-card p {
+  line-height: 1.45;
+}
+
+/* ---------- Statistics ---------- */
+
+.stat-card > div:last-child {
+  min-width: 0;
+}
+
+.stat-card strong {
+  display: block;
+  line-height: 1.15;
+  margin-top: 2px;
+}
+
+/* ---------- Quick Actions ---------- */
+
+.quick-card {
+  min-height: 112px;
+  justify-content: center;
+}
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 768px) {
+
+  .topbar {
+    min-height: 78px;
+    padding: 12px 12px;
+  }
+
+  .mobile-menu {
+    width: 40px;
+    height: 40px;
+    margin-right: 7px;
+    padding: 0;
+    flex-shrink: 0;
+  }
+
+  .mobile-menu .material-symbols-rounded {
+    font-size: 29px;
+  }
+
+  .page-header h1 {
+    font-size: 32px;
+    line-height: 1.05;
+    letter-spacing: -0.6px;
+    white-space: nowrap;
+  }
+
+  .page-header p {
+    font-size: 15px;
+    margin-top: 4px;
+    white-space: nowrap;
+  }
+
+  .profile-trigger {
+    gap: 5px;
+    padding: 2px;
+  }
+
+  .profile-trigger .avatar {
+    width: 40px;
+    height: 40px;
+  }
+
+  .admin-box strong {
+    font-size: 13px !important;
+  }
+
+  .admin-box small {
+    font-size: 10px !important;
+  }
+
+  .drop-icon {
+    font-size: 21px;
+  }
+
+  .content {
+    padding: 18px 14px 28px;
+  }
+
+  /* 2-column mobile statistics */
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .stat-card {
+    min-height: 92px;
+    padding: 13px;
+    gap: 10px;
+    border-radius: 14px;
+  }
+
+  .stat-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 11px;
+    font-size: 20px;
+  }
+
+  .stat-card span {
+    font-size: 10px;
+    line-height: 1.25;
+    margin-bottom: 3px;
+  }
+
+  .stat-card strong {
+    font-size: 19px;
+  }
+
+  /* Welcome card */
+  .welcome-card {
+    min-height: 235px;
+    padding: 22px 20px;
+    border-radius: 18px;
+    margin-bottom: 20px;
+  }
+
+  .welcome-card h2 {
+    font-size: 31px;
+    line-height: 1.12;
+    max-width: 230px;
+  }
+
+  .welcome-card p {
+    font-size: 14px !important;
+    line-height: 1.45;
+    max-width: 245px;
+  }
+
+  .welcome-card > div:last-child .material-symbols-rounded {
+    font-size: 52px !important;
+  }
+
+  /* Section headings */
+  .section-heading {
+    margin-bottom: 12px;
+  }
+
+  .section-heading h2 {
+    font-size: 18px;
+  }
+
+  .section-heading p {
+    font-size: 12px;
+  }
+
+  /* Quick actions */
+  .quick-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .quick-card {
+    min-height: 110px;
+    padding: 14px;
+    border-radius: 14px;
+    gap: 5px;
+  }
+
+  .quick-card strong {
+    font-size: 14px;
+    line-height: 1.25;
+  }
+
+  .quick-card small {
+    font-size: 11px;
+    line-height: 1.3;
+  }
+
+  .empty-card {
+    padding: 32px 16px;
+  }
+}
+
+/* ---------- Very Small Phones ---------- */
+
+@media (max-width: 390px) {
+
+  .topbar {
+    padding-left: 9px;
+    padding-right: 9px;
+  }
+
+  .mobile-menu {
+    margin-right: 4px;
+  }
+
+  .page-header h1 {
+    font-size: 29px;
+  }
+
+  .page-header p {
+    font-size: 13px;
+  }
+
+  .admin-box {
+    display: none;
+  }
+
+  .profile-trigger {
+    gap: 2px;
+  }
+
+  .profile-trigger .avatar {
+    width: 38px;
+    height: 38px;
+  }
+
+  .drop-icon {
+    font-size: 20px;
+  }
+
+  .content {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .welcome-card {
+    min-height: 220px;
+  }
+
+  .welcome-card h2 {
+    font-size: 28px;
+    max-width: 205px;
+  }
+
+  .welcome-card p {
+    max-width: 210px;
+  }
+
+  .welcome-card > div:last-child .material-symbols-rounded {
+    font-size: 45px !important;
+  }
+
+  .stat-card {
+    padding: 11px;
+    gap: 8px;
+  }
+
+  .stat-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+  }
+
+  .stat-card span {
+    font-size: 9px;
+  }
+
+  .stat-card strong {
+    font-size: 18px;
+  }
+}
+
+/* ---------- Desktop ---------- */
+
+@media (min-width: 769px) {
+  .page-header h1 {
+    font-size: 36px;
+  }
+
+  .welcome-card h2 {
+    max-width: 520px;
+  }
+}

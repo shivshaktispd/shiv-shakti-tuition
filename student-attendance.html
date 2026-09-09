@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Student Attendance</title>
+<link rel="icon" type="image/png" href="./logo.png">
+<link rel="apple-touch-icon" href="./logo.png">
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f5f7fb;
+  color:#172033
+}
+.top{
+  background:#fff;
+  padding:16px;
+  border-bottom:1px solid #e5e7eb;
+  position:sticky;
+  top:0;
+  z-index:5
+}
+.top button{
+  border:0;
+  background:#eef2ff;
+  padding:9px 13px;
+  border-radius:10px;
+  font-weight:700
+}
+.wrap{
+  max-width:760px;
+  margin:auto;
+  padding:16px
+}
+.profile{
+  background:#fff;
+  border-radius:18px;
+  padding:18px;
+  display:flex;
+  gap:15px;
+  align-items:center;
+  box-shadow:0 3px 14px #0000000b
+}
+.photo{
+  width:72px;
+  height:72px;
+  border-radius:16px;
+  object-fit:cover;
+  background:#eee
+}
+.name{
+  font-size:22px;
+  font-weight:800
+}
+.sub{
+  color:#6b7280;
+  margin-top:5px
+}
+.month{
+  display:flex;
+  gap:8px;
+  margin:16px 0
+}
+.month button{
+  flex:1;
+  border:1px solid #ddd;
+  background:#fff;
+  padding:11px;
+  border-radius:11px;
+  font-weight:700
+}
+.month button.active{
+  background:#172033;
+  color:#fff
+}
+.summary{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  margin-bottom:16px
+}
+.stat{
+  background:#fff;
+  padding:14px;
+  border-radius:14px;
+  text-align:center;
+  box-shadow:0 2px 10px #00000008
+}
+.num{
+  font-size:23px;
+  font-weight:800
+}
+.label{
+  font-size:12px;
+  color:#6b7280;
+  margin-top:4px
+}
+.card{
+  background:#fff;
+  border-radius:16px;
+  padding:16px;
+  box-shadow:0 2px 10px #00000008
+}
+.title{
+  font-size:18px;
+  font-weight:800;
+  margin-bottom:12px
+}
+.row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:12px 0;
+  border-bottom:1px solid #eee
+}
+.row:last-child{
+  border-bottom:0
+}
+.date{
+  font-weight:700
+}
+.badge{
+  min-width:34px;
+  text-align:center;
+  padding:6px 9px;
+  border-radius:8px;
+  font-weight:800;
+  background:#eee
+}
+.P{
+  background:#dcfce7;
+  color:#166534
+}
+.A{
+  background:#fee2e2;
+  color:#991b1b
+}
+.L{
+  background:#fef3c7;
+  color:#92400e
+}
+.H,.S{
+  background:#e0e7ff;
+  color:#3730a3
+}
+.empty{
+  text-align:center;
+  color:#6b7280;
+  padding:30px
+}
+@media(max-width:600px){
+  .summary{
+    grid-template-columns:repeat(2,1fr)
+  }
+  .name{
+    font-size:19px
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="top">
+  <div class="wrap" style="padding:0">
+    <button onclick="history.back()">← Back</button>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <div id="profile" class="profile">
+    Loading...
+  </div>
+
+  <div class="month">
+    <button id="prev">‹</button>
+    <button id="monthLabel" class="active">Loading</button>
+    <button id="next">›</button>
+  </div>
+
+  <div id="summary" class="summary"></div>
+
+  <div class="card">
+    <div class="title">Date-wise Attendance</div>
+    <div id="history">
+      <div class="empty">Loading...</div>
+    </div>
+  </div>
+
+</main>
+
+<script type="module" src="./student-attendance.js"></script>
+
+</body>
+</html>

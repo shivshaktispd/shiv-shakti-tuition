@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attendance - Shiv Shakti Tuition</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet">
+
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./attendance.css">
+  <link rel="icon" type="image/png" href="./logo.png">
+<link rel="apple-touch-icon" href="./logo.png">
+
+</head>
+
+<body>
+
+  <main class="attendance-page animate-fade">
+
+    <!-- =========================
+         MARK ATTENDANCE
+    ========================== -->
+    <section class="attendance-card">
+
+      <div class="section-header">
+        <h2>
+          <span class="material-symbols-rounded">fact_check</span>
+          Mark Attendance
+        </h2>
+        <p>Select date and shift to proceed</p>
+      </div>
+
+      <div class="attendance-controls">
+
+        <div class="attendance-field">
+          <label for="attendanceDate">Date</label>
+          <input type="date" id="attendanceDate">
+        </div>
+
+        <div class="attendance-field">
+          <label>Students</label>
+
+          <div class="shift-buttons">
+
+            <button
+              type="button"
+              id="morningBtn"
+              class="shift-btn active"
+              onclick="selectAttendanceShift('Morning')">
+              <span class="material-symbols-rounded">light_mode</span>
+              Morning
+            </button>
+
+            <button
+              type="button"
+              id="eveningBtn"
+              class="shift-btn"
+              onclick="selectAttendanceShift('Evening')">
+              <span class="material-symbols-rounded">dark_mode</span>
+              Evening
+            </button>
+
+            <button
+              type="button"
+              id="allStudentsBtn"
+              class="shift-btn"
+              onclick="selectAttendanceShift('All')">
+              <span class="material-symbols-rounded">groups</span>
+              All Students
+            </button>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- =========================
+         STUDENT LIST
+    ========================== -->
+    <section
+      class="attendance-card animate-fade"
+      style="animation-delay:0.1s;">
+
+      <div class="section-header">
+
+        <div>
+          <h2>
+            <span class="material-symbols-rounded">groups</span>
+            Students
+          </h2>
+
+          <p>
+            Mark today's attendance status
+          </p>
+        </div>
+
+      </div>
+
+
+      <!-- MARK ALL -->
+      <div
+        style="
+          margin-bottom:20px;
+          display:flex;
+          flex-wrap:wrap;
+          gap:10px;
+        ">
+
+        <button
+          type="button"
+          onclick="markAllH()"
+          class="btn-outline">
+
+          <span
+            class="material-symbols-rounded"
+            style="color:var(--accent);">
+            beach_access
+          </span>
+
+          Mark All H
+        </button>
+
+
+        <button
+          type="button"
+          onclick="markAllS()"
+          class="btn-outline">
+
+          <span
+            class="material-symbols-rounded"
+            style="color:var(--primary);">
+            check_circle
+          </span>
+
+          Mark All S
+        </button>
+
+      </div>
+
+
+      <!-- STUDENTS -->
+      <div id="attendanceStudents">
+
+        <div
+          style="
+            padding:30px;
+            text-align:center;
+            color:var(--text-muted);
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            gap:10px;
+          ">
+
+          <span
+            class="material-symbols-rounded spin-icon"
+            style="
+              font-size:30px;
+              color:var(--primary);
+            ">
+            autorenew
+          </span>
+
+          Loading students...
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         HOLIDAY / NOTE
+    ========================== -->
+    <section
+      class="attendance-card animate-fade"
+      style="animation-delay:0.2s;">
+
+      <div class="section-header">
+
+        <h2>
+          <span class="material-symbols-rounded">
+            event_busy
+          </span>
+
+          Holiday / Note
+        </h2>
+
+        <p>
+          Sunday or any special holiday reason can be saved here.
+        </p>
+
+      </div>
+
+
+      <div class="attendance-field">
+
+        <textarea
+          id="holidayReason"
+          rows="3"
+          placeholder="Example: Sunday / Raksha Bandhan / Tuition closed..."></textarea>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         SAVE
+    ========================== -->
+    <section
+      class="animate-fade"
+      style="
+        animation-delay:0.2s;
+        margin-bottom:30px;
+      ">
+
+      <button
+        type="button"
+        class="action-btn"
+        id="saveBtn"
+        onclick="saveAttendance()">
+
+        <span class="material-symbols-rounded">
+          save
+        </span>
+
+        Save Attendance
+
+      </button>
+
+    </section>
+
+
+    <!-- =========================
+         ATTENDANCE HISTORY
+    ========================== -->
+    <section
+      class="attendance-card animate-fade"
+      style="animation-delay:0.3s;">
+
+      <div class="section-header">
+
+        <h2>
+          <span class="material-symbols-rounded">
+            history
+          </span>
+
+          Attendance History
+        </h2>
+
+        <p>
+          Day-by-day and full month record
+        </p>
+
+      </div>
+
+
+      <!-- HISTORY MODE -->
+      <div
+        class="attendance-field"
+        style="
+          max-width:300px;
+          margin-bottom:25px;
+        ">
+
+        <label for="historyViewMode">
+          History View
+        </label>
+
+        <select
+          id="historyViewMode"
+          onchange="toggleAttendanceViewMode()">
+
+          <option value="day">
+            Day-by-Day
+          </option>
+
+          <option value="month">
+            Full Month
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- =========================
+           DAY HISTORY
+      ========================== -->
+      <div
+        id="dayByDayBox"
+        class="history-box">
+
+        <h3
+          style="
+            font-size:15px;
+            margin-bottom:15px;
+            color:var(--text-main);
+            display:flex;
+            align-items:center;
+            gap:6px;
+          ">
+
+          <span class="material-symbols-rounded">
+            today
+          </span>
+
+          Day-by-Day History
+
+        </h3>
+
+
+        <div
+          class="attendance-controls"
+          style="margin-bottom:20px;">
+
+          <div class="attendance-field">
+
+            <label for="hubDateInput">
+              Date
+            </label>
+
+            <input
+              type="date"
+              id="hubDateInput">
+
+          </div>
+
+
+          <div class="attendance-field">
+
+            <label for="hubShiftSelect">
+              Shift
+            </label>
+
+            <select id="hubShiftSelect">
+
+              <option value="Morning">
+                Morning
+              </option>
+
+              <option value="Evening">
+                Evening
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="btn-outline"
+          style="
+            width:100%;
+            justify-content:center;
+            margin-bottom:20px;
+          "
+          onclick="loadHubDayAttendance()">
+
+          <span class="material-symbols-rounded">
+            search
+          </span>
+
+          View Day
+
+        </button>
+
+
+        <div id="hubDayContainer">
+
+          <div
+            style="
+              padding:20px;
+              text-align:center;
+              color:var(--text-muted);
+              border:1px dashed #cbd5e1;
+              border-radius:8px;
+            ">
+
+            Select date to view history.
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- =========================
+           MONTH HISTORY
+      ========================== -->
+      <div
+        id="fullMonthBox"
+        class="history-box"
+        style="display:none;">
+
+        <h3
+          style="
+            font-size:15px;
+            margin-bottom:15px;
+            color:var(--text-main);
+            display:flex;
+            align-items:center;
+            gap:6px;
+          ">
+
+          <span class="material-symbols-rounded">
+            calendar_month
+          </span>
+
+          Full Month History
+
+        </h3>
+
+
+        <div
+          class="attendance-controls"
+          style="margin-bottom:20px;">
+
+          <div class="attendance-field">
+
+            <label for="hubMonthInput">
+              Month
+            </label>
+
+            <input
+              type="month"
+              id="hubMonthInput">
+
+          </div>
+
+
+          <div class="attendance-field">
+
+            <label for="hubMonthShiftSelect">
+              Shift
+            </label>
+
+            <select id="hubMonthShiftSelect">
+
+              <option value="All">
+                All Shifts
+              </option>
+
+              <option value="Morning">
+                Morning
+              </option>
+
+              <option value="Evening">
+                Evening
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="btn-outline"
+          style="
+            width:100%;
+            justify-content:center;
+            margin-bottom:20px;
+          "
+          onclick="loadHubMonthAttendance()">
+
+          <span class="material-symbols-rounded">
+            search
+          </span>
+
+          View Month
+
+        </button>
+
+
+        <div id="hubMonthContainer">
+
+          <div
+            style="
+              padding:20px;
+              text-align:center;
+              color:var(--text-muted);
+              border:1px dashed #cbd5e1;
+              border-radius:8px;
+            ">
+
+            Select month to view history.
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         EDIT ATTENDANCE
+    ========================== -->
+    <section
+      class="attendance-card animate-fade"
+      style="animation-delay:0.4s;">
+
+      <div class="section-header">
+
+        <h2>
+          <span class="material-symbols-rounded">
+            edit_square
+          </span>
+
+          Edit Attendance
+        </h2>
+
+        <p>
+          Update or change previous attendance records.
+        </p>
+
+      </div>
+
+
+      <div
+        class="attendance-controls"
+        style="margin-bottom:20px;">
+
+        <div class="attendance-field">
+
+          <label for="editAttendanceDate">
+            Date
+          </label>
+
+          <input
+            type="date"
+            id="editAttendanceDate">
+
+        </div>
+
+
+        <div class="attendance-field">
+
+          <label for="editAttendanceShift">
+            Shift
+          </label>
+
+          <select id="editAttendanceShift">
+
+            <option value="Morning">
+              Morning
+            </option>
+
+            <option value="Evening">
+              Evening
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="btn-outline"
+        style="
+          width:100%;
+          justify-content:center;
+          margin-bottom:20px;
+        "
+        onclick="loadSeparateEditAttendance()">
+
+        <span class="material-symbols-rounded">
+          edit
+        </span>
+
+        Load Record to Edit
+
+      </button>
+
+
+      <div id="separateEditContainer">
+
+        <div
+          style="
+            padding:20px;
+            text-align:center;
+            color:var(--text-muted);
+            border:1px dashed #cbd5e1;
+            border-radius:8px;
+          ">
+
+          Select date and shift, then click Load.
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- BACK -->
+    <section
+      style="
+        margin-bottom:40px;
+        text-align:center;
+      ">
+
+      <button
+        type="button"
+        class="btn-outline"
+        style="
+          display:inline-flex;
+          background:white;
+        "
+        onclick="window.location.href='./students.html'">
+
+        <span class="material-symbols-rounded">
+          arrow_back
+        </span>
+
+        Back to Students
+
+      </button>
+
+    </section>
+
+  </main>
+
+
+  <!-- TOAST -->
+  <div id="customToast">
+
+    <span
+      class="material-symbols-rounded"
+      id="toastIcon">
+      check_circle
+    </span>
+
+    <span id="toastMessage">
+      Success
+    </span>
+
+  </div>
+
+
+  <script
+    type="module"
+    src="./attendance.js">
+  </script>
+
+  <script
+    type="module"
+    src="./app.js">
+  </script>
+
+</body>
+</html>

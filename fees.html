@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Fees - Shiv Shakti Tuition</title>
+
+  <!-- Premium Font -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <!-- Material Icons -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./fees.css">
+  <link rel="icon" type="image/png" href="./logo.png">
+<link rel="apple-touch-icon" href="./logo.png">
+
+</head>
+
+<body>
+
+  <main class="fees-page animate-fade">
+
+    <!-- ==========================================
+         BRANDING
+         ========================================== -->
+    <div
+      style="
+        font-size:13px;
+        font-weight:800;
+        color:#f59e0b;
+        text-transform:uppercase;
+        letter-spacing:1.5px;
+        text-align:center;
+        margin-bottom:10px;
+      "
+    >
+      Shiv Shakti Tuition
+    </div>
+
+    <!-- ==========================================
+         PAGE TITLE
+         ========================================== -->
+    <h1
+      style="
+        margin:0;
+        font-size:20px;
+        color:var(--primary);
+        text-align:center;
+      "
+    >
+      <span class="material-symbols-rounded">
+        payments
+      </span>
+      Manage Fees
+    </h1>
+
+    <!-- ==========================================
+         HEADER
+         ========================================== -->
+    <div
+      class="fees-header"
+      style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:24px;
+        flex-wrap:wrap;
+        gap:12px;
+      "
+    >
+
+      <div
+        style="
+          display:flex;
+          align-items:center;
+          gap:12px;
+          flex-wrap:wrap;
+        "
+      >
+
+        <!-- BACK BUTTON -->
+        <button
+          type="button"
+          onclick="history.back()"
+          style="
+            border:1px solid var(--border);
+            background:#ffffff;
+            color:var(--text-main);
+            padding:8px 14px;
+            border-radius:30px;
+            font-size:13px;
+            font-weight:600;
+            display:inline-flex;
+            align-items:center;
+            gap:4px;
+            cursor:pointer;
+            box-shadow:0 1px 3px rgba(0,0,0,0.05);
+            transition:0.2s;
+          "
+        >
+          <span class="material-symbols-rounded">
+            arrow_back
+          </span>
+          Back
+        </button>
+
+      </div>
+
+      <!-- DUE LIST -->
+      <button
+        type="button"
+        onclick="window.openDueStudentsModal()"
+        style="
+          background:#fef2f2;
+          color:#dc2626;
+          border:1px solid #fca5a5;
+          padding:8px 14px;
+          border-radius:8px;
+          font-weight:700;
+          display:flex;
+          align-items:center;
+          gap:4px;
+          cursor:pointer;
+          font-size:13px;
+          box-shadow:0 2px 4px rgba(220,38,38,0.1);
+          transition:0.2s;
+        "
+      >
+        <span class="material-symbols-rounded">
+          notification_important
+        </span>
+        Due List
+      </button>
+
+    </div>
+
+
+    <!-- ==========================================
+         STUDENT SELECTION & DETAILS
+         ========================================== -->
+    <section
+      class="fees-card"
+      id="studentSelectionCard"
+    >
+
+      <!-- STUDENT DROPDOWN -->
+      <div
+        id="dropdownContainer"
+        style="margin-bottom:20px;"
+      >
+
+        <label
+          style="
+            display:block;
+            margin-bottom:8px;
+            font-weight:600;
+            font-size:14px;
+            color:var(--text-muted);
+          "
+        >
+          Select Student
+        </label>
+
+        <select
+          id="feeStudentSelect"
+          class="form-input"
+        >
+          <option value="">
+            -- Loading Students... --
+          </option>
+        </select>
+
+      </div>
+
+
+      <!-- STUDENT INFO -->
+      <div class="student-info-box">
+
+        <!-- NAME -->
+        <div class="info-item">
+
+          <span class="info-label">
+            Student Name
+          </span>
+
+          <strong
+            class="info-value"
+            id="feeStudentName"
+            style="color:var(--primary);"
+          >
+            Select a student...
+          </strong>
+
+        </div>
+
+
+        <!-- ID -->
+        <div class="info-item">
+
+          <span class="info-label">
+            Student ID
+          </span>
+
+          <strong
+            class="info-value"
+            id="feeStudentId"
+            style="
+              background:#e0e7ff;
+              color:#4338ca;
+              padding:2px 8px;
+              border-radius:12px;
+              font-size:12px;
+            "
+          >
+            -
+          </strong>
+
+        </div>
+
+
+        <!-- MONTHLY FEE -->
+        <div class="info-item">
+
+          <span class="info-label">
+            Monthly Fee
+          </span>
+
+          <strong
+            class="info-value"
+            id="feeMonthlyAmount"
+            style="
+              color:#10b981;
+              font-size:16px;
+            "
+          >
+            ₹0
+          </strong>
+
+        </div>
+
+
+        <!-- DUE DAY -->
+        <div class="info-item">
+
+          <span class="info-label">
+            Due Date
+          </span>
+
+          <strong
+            class="info-value"
+            id="feeStudentDueDay"
+            style="
+              color:#ef4444;
+              font-size:16px;
+            "
+          >
+            -
+          </strong>
+
+        </div>
+
+
+        <!-- FEE START MONTH -->
+        <div class="info-item">
+
+          <span class="info-label">
+            Fee Start Month
+          </span>
+
+          <strong
+            class="info-value"
+            id="feeStudentStartMonth"
+            style="
+              color:#7c3aed;
+              font-size:15px;
+            "
+          >
+            -
+          </strong>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ==========================================
+         ADD PAYMENT
+         ========================================== -->
+    <section class="fees-card">
+
+      <div class="card-title">
+
+        <span class="material-symbols-rounded">
+          add_card
+        </span>
+
+        Add Payment
+
+      </div>
+
+
+      <div class="fee-form-grid">
+
+        <!-- PAYMENT DATE -->
+        <div class="form-group">
+
+          <label>
+            Payment Date
+          </label>
+
+          <input
+            type="date"
+            id="feePaymentDate"
+            class="form-input"
+          >
+
+        </div>
+
+
+        <!-- FEE MONTH -->
+        <div class="form-group">
+
+          <label>
+            Fee Month
+          </label>
+
+          <input
+            type="month"
+            id="feeMonth"
+            class="form-input"
+          >
+
+        </div>
+
+
+        <!-- PAID -->
+        <div class="form-group">
+
+          <label>
+            Paid Amount (₹)
+          </label>
+
+          <input
+            type="number"
+            id="feePaidAmount"
+            class="form-input highlight-input"
+            min="0"
+            step="1"
+            placeholder="Enter amount"
+          >
+
+        </div>
+
+
+        <!-- ADVANCE -->
+        <div class="form-group">
+
+          <label>
+            Advance (₹)
+          </label>
+
+          <input
+            type="number"
+            id="feeAdvanceAmount"
+            class="form-input readonly-input"
+            min="0"
+            step="1"
+            value="0"
+            readonly
+          >
+
+        </div>
+
+
+        <!-- CURRENT PAYMENT DUE -->
+        <div class="form-group">
+
+          <label>
+            Due (Pending) ₹
+          </label>
+
+          <input
+            type="number"
+            id="feePendingAmount"
+            class="form-input readonly-input"
+            min="0"
+            step="1"
+            value="0"
+            readonly
+          >
+
+        </div>
+
+      </div>
+
+
+      <!-- SAVE -->
+      <button
+        type="button"
+        id="saveFeeButton"
+        class="action-btn"
+        onclick="window.saveFeePayment()"
+        style="
+          width:100%;
+          margin-top:24px;
+          background:var(--primary);
+          color:white;
+          border:none;
+          padding:14px;
+          border-radius:12px;
+          font-size:16px;
+          font-weight:700;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          gap:8px;
+          cursor:pointer;
+          box-shadow:0 4px 10px rgba(10,29,63,0.15);
+          transition:0.2s;
+        "
+      >
+
+        <span class="material-symbols-rounded">
+          save
+        </span>
+
+        Save Payment
+
+      </button>
+
+    </section>
+
+
+    <!-- ==========================================
+         FEE SUMMARY
+         ========================================== -->
+    <section class="fees-card summary-grid">
+
+      <!-- TOTAL PAID -->
+      <div class="summary-box sum-paid">
+
+        <div class="sum-title">
+          Total Paid
+        </div>
+
+        <div
+          class="sum-amount"
+          id="feeTotalPaid"
+        >
+          ₹0
+        </div>
+
+      </div>
+
+
+      <!-- TOTAL ADVANCE -->
+      <div class="summary-box sum-advance">
+
+        <div class="sum-title">
+          Total Advance
+        </div>
+
+        <div
+          class="sum-amount"
+          id="feeTotalAdvance"
+        >
+          ₹0
+        </div>
+
+      </div>
+
+
+      <!-- TOTAL DUE -->
+      <div class="summary-box sum-pending">
+
+        <div class="sum-title">
+          Total Due
+        </div>
+
+        <div
+          class="sum-amount"
+          id="feeTotalPending"
+        >
+          ₹0
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ==========================================
+         PAYMENT HISTORY
+         ========================================== -->
+    <section class="fees-card">
+
+      <div class="card-title">
+
+        <span class="material-symbols-rounded">
+          history
+        </span>
+
+        Payment History
+
+      </div>
+
+      <div id="feeHistory">
+
+        <div
+          style="
+            padding:30px;
+            text-align:center;
+            color:var(--text-muted);
+          "
+        >
+          Select a student to view history.
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ==========================================
+         DUE STUDENTS MODAL
+         ========================================== -->
+    <div
+      id="dueStudentsModal"
+      style="
+        display:none;
+        position:fixed;
+        z-index:99999;
+        left:0;
+        top:0;
+        width:100%;
+        height:100%;
+        background:rgba(15,23,42,0.7);
+        overflow-y:auto;
+        padding:20px;
+        backdrop-filter:blur(4px);
+      "
+    >
+
+      <div
+        style="
+          background:white;
+          width:100%;
+          max-width:600px;
+          margin:20px auto;
+          padding:24px;
+          border-radius:16px;
+          box-shadow:0 20px 25px -5px rgba(0,0,0,0.1);
+        "
+      >
+
+        <!-- MODAL BRAND -->
+        <div
+          style="
+            background:var(--primary);
+            color:white;
+            text-align:center;
+            padding:12px;
+            font-size:14px;
+            font-weight:700;
+            letter-spacing:1px;
+            text-transform:uppercase;
+            border-radius:10px;
+            margin-bottom:20px;
+          "
+        >
+          Shiv Shakti Tuition
+        </div>
+
+
+        <!-- MODAL TITLE -->
+        <h2
+          style="
+            color:var(--primary);
+            font-size:20px;
+            display:flex;
+            align-items:center;
+            gap:8px;
+            margin-bottom:10px;
+          "
+        >
+
+          <span
+            class="material-symbols-rounded"
+            style="color:#ef4444;"
+          >
+            warning
+          </span>
+
+          Pending Dues
+
+        </h2>
+
+
+        <p
+          style="
+            color:var(--text-muted);
+            font-size:13px;
+            margin-bottom:20px;
+          "
+          id="dueMonthLabel"
+        >
+          Loading...
+        </p>
+
+
+        <!-- DUE LIST -->
+        <div
+          id="dueStudentsList"
+          style="
+            max-height:50vh;
+            overflow-y:auto;
+          "
+        >
+
+          <div
+            style="
+              text-align:center;
+              padding:30px;
+              color:var(--text-muted);
+            "
+          >
+
+            <span
+              class="material-symbols-rounded spin-icon"
+              style="
+                font-size:30px;
+                color:var(--primary);
+              "
+            >
+              autorenew
+            </span>
+
+            <br>
+
+            Calculating Dues...
+
+          </div>
+
+        </div>
+
+
+        <!-- CLOSE -->
+        <button
+          type="button"
+          onclick="window.closeDueStudentsModal()"
+          style="
+            width:100%;
+            padding:14px;
+            background:#f1f5f9;
+            color:var(--text-main);
+            border:none;
+            border-radius:8px;
+            font-size:15px;
+            font-weight:600;
+            cursor:pointer;
+            margin-top:20px;
+          "
+        >
+          Close Window
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- ==========================================
+         TOAST
+         ========================================== -->
+    <div id="customToast">
+
+      <span
+        class="material-symbols-rounded"
+        id="toastIcon"
+      >
+        check_circle
+      </span>
+
+      <span id="toastMessage">
+        Success
+      </span>
+
+    </div>
+
+  </main>
+
+
+  <!-- ==========================================
+       SCRIPTS
+       ========================================== -->
+  <script
+    type="module"
+    src="./fees.js"
+  ></script>
+
+  <script
+    type="module"
+    src="./app.js"
+  ></script>
+
+</body>
+
+</html>

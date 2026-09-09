@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Complete Report - Print</title>
+  <link rel="icon" type="image/png" href="./logo.png">
+<link rel="apple-touch-icon" href="./logo.png">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary: #0a1d3f; 
+      --secondary: #163262; 
+      --present: #10b981;
+      --absent: #ef4444;
+      --holiday: #f59e0b;
+      --total: #3b82f6;
+      --text: #1e293b;
+      --border: #cbd5e1;
+      --bg: #f8fafc;
+    }
+
+    /* COLOR FIX: Ye line browsers ko force karegi background colors print karne ke liye */
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+      -webkit-print-color-adjust: exact !important; 
+      print-color-adjust: exact !important; 
+    }
+    
+    body { 
+      font-family: 'Inter', sans-serif; 
+      background: #525659; 
+      color: var(--text); 
+      display: flex; 
+      justify-content: center; 
+      padding: 20px 0;
+    }
+
+    .a4-page { 
+      width: 210mm;
+      min-height: 297mm; 
+      background: white; 
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3); 
+      display: flex; 
+      flex-direction: column; 
+      position: relative; 
+    }
+    
+    .page-content { 
+      padding: 10mm 15mm; 
+      flex-grow: 1; 
+      position: relative; 
+      z-index: 1; 
+    }
+
+    .watermark {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0.06; 
+      pointer-events: none;
+      z-index: 0;
+    }
+    .watermark img { width: 450px; }
+
+    .download-btn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #dc2626;
+      color: white;
+      border: none;
+      padding: 16px 24px;
+      border-radius: 50px;
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      box-shadow: 0 10px 25px rgba(220, 38, 38, 0.4);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 10000;
+      transition: 0.3s;
+    }
+    .download-btn:hover { background: #b91c1c; transform: translateY(-3px); }
+
+    .header-grid { display: grid; grid-template-columns: 100px 1fr 200px; align-items: center; gap: 15px; margin-bottom: 15px; }
+    .logo-box { width: 90px; height: 90px; display: flex; align-items: center; justify-content: center; }
+    .logo-box img { width: 100%; height: 100%; object-fit: contain; }
+    
+    .title-box { text-align: center; }
+    .title-box h1 { font-family: 'Merriweather', serif; color: var(--primary); font-size: 28px; letter-spacing: 1px; margin-bottom: 5px; }
+    .title-box p { font-weight: 500; font-size: 14px; color: var(--text); margin-bottom: 8px; }
+    
+    .badge { background: var(--primary); color: white; padding: 5px 15px; border-radius: 4px; font-size: 12px; font-weight: bold; display: inline-block; letter-spacing: 0.5px; }
+    
+    .meta-box { font-size: 11px; line-height: 1.8; font-weight: 500; background: var(--bg); padding: 10px; border-radius: 8px; border: 1px solid var(--border); }
+    .meta-box i { color: var(--primary); width: 16px; }
+
+    .contact-bar { border-top: 2px solid var(--primary); border-bottom: 2px solid var(--primary); padding: 10px 0; display: grid; grid-template-columns: 1fr 1fr 1fr; font-size: 11px; margin-bottom: 20px; background: #f1f5f9; }
+    .contact-item { display: flex; align-items: center; gap: 10px; padding: 0 10px; }
+    .contact-item i { font-size: 18px; color: var(--primary); }
+
+    .report-title-section { text-align: center; margin-bottom: 15px; }
+    .report-title-section h2 { font-family: 'Merriweather', serif; color: var(--primary); font-size: 18px; margin-bottom: 5px; position: relative; display: inline-block; }
+    .report-title-section h2::before, .report-title-section h2::after { content: '〰️'; position: absolute; top: 50%; transform: translateY(-50%); font-size: 14px; color: var(--primary); }
+    .report-title-section h2::before { left: -30px; }
+    .report-title-section h2::after { right: -30px; }
+    .month-badge { background: var(--primary); color: white; padding: 4px 15px; border-radius: 15px; font-size: 12px; font-weight: bold; display: inline-block; text-transform: uppercase; }
+
+    .student-info { border: 1px solid var(--border); border-radius: 10px; padding: 15px; display: flex; gap: 20px; margin-bottom: 20px; background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+    .student-photo { width: 80px; height: 80px; background: var(--bg); border-radius: 50%; border: 2px solid var(--primary); display: flex; align-items: center; justify-content: center; font-size: 30px; color: #94a3b8; overflow: hidden; }
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 30px; flex-grow: 1; font-size: 12px; }
+    .info-item { display: flex; align-items: center; }
+    .info-item i { color: var(--primary); width: 20px; }
+    .info-label { width: 110px; font-weight: 500; color: #64748b; }
+    .info-value { font-weight: 700; color: var(--primary); }
+
+    table { width: 100%; border-collapse: collapse; margin-bottom: 10px; font-size: 11px; text-align: center; }
+    th { background: var(--primary); color: white; padding: 10px 8px; border: 1px solid var(--primary); }
+    td { padding: 8px; border: 1px solid var(--border); font-weight: 500; }
+    tr:nth-child(even) { background: var(--bg); }
+    
+    .status-chip { display: inline-flex; align-items: center; gap: 5px; font-weight: bold; }
+    .status-icon { width: 18px; height: 18px; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 10px; }
+    .status-p { color: var(--present); } .status-p .status-icon { background: var(--present); }
+    .status-a { color: var(--absent); } .status-a .status-icon { background: var(--absent); }
+    .status-h { color: var(--holiday); } .status-h .status-icon { background: var(--holiday); }
+
+    .total-records { text-align: center; font-size: 11px; font-weight: bold; margin-bottom: 20px; color: var(--text); }
+
+    .summary-section { border: 1px solid var(--border); border-radius: 8px; padding: 15px; position: relative; margin-bottom: 25px; background: white; }
+    .summary-title { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--primary); color: white; padding: 3px 15px; border-radius: 20px; font-size: 11px; font-weight: bold; }
+    .summary-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; text-align: center; margin-top: 5px; }
+    .summary-grid-fees { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: center; margin-top: 5px; }
+    
+    .sum-box { border: 1px solid var(--border); padding: 10px; border-radius: 8px; background: var(--bg); }
+    .sum-box h4 { font-size: 10px; margin-bottom: 6px; text-transform: uppercase; color: #64748b; font-weight: 700; }
+    .sum-box i { font-size: 20px; margin-bottom: 8px; }
+    .sum-box .num { font-size: 18px; font-weight: 800; }
+    
+    .c-present { color: var(--present); border-color: #d1fae5; background: #ecfdf5; }
+    .c-absent { color: var(--absent); border-color: #fee2e2; background: #fef2f2; }
+    .c-holiday { color: var(--holiday); border-color: #fef3c7; background: #fffbeb; }
+    .c-total { color: var(--total); border-color: #dbeafe; background: #eff6ff; }
+    .c-perc { color: var(--primary); border-color: #e2e8f0; background: #f8fafc; }
+
+    .footer-section { display: flex; justify-content: space-between; align-items: flex-end; padding: 0 20px; margin-top: 30px; margin-bottom: 20px; page-break-inside: avoid; }
+    .sign-box { font-size: 12px; font-weight: 600; text-align: center; width: 150px; }
+    .sign-box p { margin-bottom: 4px; }
+    .sign-line { border-top: 1px solid var(--text); margin-top: 50px; padding-top: 5px; }
+    
+    .stamp { width: 90px; height: 90px; border: 2px solid var(--primary); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--primary); font-weight: bold; position: relative; opacity: 0.85; }
+    .stamp::before { content: ''; position: absolute; top: 4px; left: 4px; right: 4px; bottom: 4px; border: 1px dashed var(--primary); border-radius: 50%; }
+    .stamp-text { font-size: 9px; text-align: center; letter-spacing: 0.5px; }
+    .stamp-main { font-size: 22px; margin: 2px 0; font-family: 'Merriweather', serif; }
+
+    .bottom-bar { background: var(--primary); color: white; display: flex; justify-content: space-between; padding: 12px 15px; font-size: 11px; margin-top: auto; }
+    .bottom-bar div { display: flex; align-items: center; gap: 6px; }
+
+    @media print { 
+      body { padding: 0; background: white; zoom: 1 !important; } 
+      .a4-page { box-shadow: none; width: 210mm; min-height: 0; }
+      .download-btn { display: none !important; } 
+      .watermark { opacity: 0.05 !important; } 
+      
+      table { page-break-inside: auto; }
+      tr { page-break-inside: avoid; page-break-after: auto; }
+      thead { display: table-header-group; }
+    }
+  </style>
+
+  <script>
+    function fitPage() {
+      const screenWidth = window.innerWidth;
+      if (screenWidth < 850) {
+        document.body.style.zoom = (screenWidth / 850);
+      } else {
+        document.body.style.zoom = 1;
+      }
+    }
+    window.onload = fitPage;
+    window.onresize = fitPage;
+  </script>
+</head>
+<body>
+
+  <!-- Floating Download Button -->
+  <button class="download-btn" onclick="window.print()">
+    <i class="fa-solid fa-file-pdf"></i> Download PDF
+  </button>
+
+  <div class="a4-page">
+    
+    <!-- WATERMARK LOGO -->
+    <div class="watermark">
+      <img src="./logo.png" alt="Watermark">
+    </div>
+
+    <div class="page-content">
+      
+      <!-- HEADER -->
+      <div class="header-grid">
+        <div class="logo-box">
+          <img src="./logo.png" alt="Shiv Shakti Tuition Logo">
+        </div>
+        <div class="title-box">
+          <h1>SHIV SHAKTI TUITION</h1>
+          <p>Quality Education • Better Future</p>
+          <div class="badge">STUDENT MANAGEMENT SYSTEM</div>
+        </div>
+        <div class="meta-box">
+          <div><i class="fa-solid fa-calendar-days"></i> Report Date &nbsp;: <span id="rDate">Loading...</span></div>
+          <div><i class="fa-regular fa-clock"></i> Report Time &nbsp;: <span id="rTime">Loading...</span></div>
+          <div><i class="fa-solid fa-file-lines"></i> Report Type &nbsp;: Monthly Profile</div>
+        </div>
+      </div>
+
+      <!-- CONTACT BAR -->
+      <div class="contact-bar">
+        <div class="contact-item"><i class="fa-solid fa-location-dot"></i><div><strong>Address</strong><br>Sultanpur Dabas Near Chameli Mandir<br>Delhi - 110039</div></div>
+        <div class="contact-item"><i class="fa-solid fa-phone"></i><div><strong>Mobile</strong><br>+91 9953142163</div></div>
+        <div class="contact-item"><i class="fa-regular fa-envelope"></i><div><strong>Email</strong><br>amitkumart5556@gmail.com</div></div>
+      </div>
+
+      <!-- REPORT TITLE -->
+      <div class="report-title-section">
+        <h2>ATTENDANCE & FEE REPORT</h2><br>
+        <div class="month-badge" id="pdfMonthBadge">LOADING...</div>
+      </div>
+
+      <!-- STUDENT INFO -->
+      <div class="student-info">
+        <div class="student-photo" id="pdfStudentPhotoBox">
+          <i class="fa-solid fa-user"></i>
+        </div>
+        <div class="info-grid">
+          <div class="info-item"><i class="fa-solid fa-user"></i><span class="info-label">Student Name</span><span class="info-value" id="pdfStudentName">: Loading...</span></div>
+          <div class="info-item"><i class="fa-solid fa-calendar-check"></i><span class="info-label">Admission Date</span><span class="info-value" id="pdfAdmissionDate">: Loading...</span></div>
+          <div class="info-item"><i class="fa-solid fa-id-card"></i><span class="info-label">Student ID</span><span class="info-value" id="pdfStudentId">: Loading...</span></div>
+          <div class="info-item"><i class="fa-solid fa-indian-rupee-sign"></i><span class="info-label">Monthly Fee</span><span class="info-value" id="pdfMonthlyFee">: Loading...</span></div>
+          <div class="info-item"><i class="fa-solid fa-graduation-cap"></i><span class="info-label">Class</span><span class="info-value" id="pdfClassName">: Loading...</span></div>
+          <div class="info-item"><i class="fa-solid fa-calendar-day"></i><span class="info-label">Fee Due Day</span><span class="info-value" id="pdfFeeDueDay">: Loading...</span></div>
+        </div>
+      </div>
+
+      <!-- ATTENDANCE TABLE -->
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Day</th>
+            <th>Shift</th>
+            <th>Status</th>
+            <th>Marked By</th>
+            <th>Remarks</th>
+          </tr>
+        </thead>
+        <tbody id="pdfAttendanceTableBody">
+          <tr><td colspan="6">⏳ Fetching Attendance...</td></tr>
+        </tbody>
+      </table>
+      <div class="total-records" id="pdfTotalRecordsCount">( Total Records : 0 Days )</div>
+
+      <!-- ATTENDANCE SUMMARY -->
+      <div class="summary-section">
+        <div class="summary-title">ATTENDANCE SUMMARY</div>
+        <div class="summary-grid">
+          <div class="sum-box c-present"><h4>Present</h4><i class="fa-solid fa-user-check"></i><div class="num" id="pdfTotalPresent">0</div></div>
+          <div class="sum-box c-absent"><h4>Absent</h4><i class="fa-solid fa-user-xmark"></i><div class="num" id="pdfTotalAbsent">0</div></div>
+          <div class="sum-box c-holiday"><h4>Holiday</h4><i class="fa-regular fa-calendar-xmark"></i><div class="num" id="pdfTotalHoliday">0</div></div>
+          <div class="sum-box c-total"><h4>Total Days</h4><i class="fa-solid fa-calendar-days"></i><div class="num" id="pdfTotalDays">0</div></div>
+          <div class="sum-box c-perc"><h4>Attendance %</h4><i class="fa-solid fa-chart-line"></i><div class="num" id="pdfAttendancePerc">0%</div></div>
+        </div>
+      </div>
+
+      <!-- FEE TABLE -->
+      <div class="report-title-section" style="margin-top: 25px; margin-bottom: 10px;">
+        <h2>FEE HISTORY</h2>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Payment Date</th>
+            <th>Fee Month</th>
+            <th>Paid Amount</th>
+            <th>Advance</th>
+            <th>Pending</th>
+          </tr>
+        </thead>
+        <tbody id="pdfFeeTableBody">
+          <tr><td colspan="5">⏳ Fetching Fees...</td></tr>
+        </tbody>
+      </table>
+
+      <!-- FEE SUMMARY -->
+      <div class="summary-section" style="margin-top: 15px;">
+        <div class="summary-title">FEE SUMMARY</div>
+        <div class="summary-grid-fees">
+          <div class="sum-box c-present">
+            <h4>Total Paid</h4><i class="fa-solid fa-hand-holding-dollar"></i><div class="num" id="pdfTotalPaid">₹0</div>
+          </div>
+          <div class="sum-box c-holiday">
+            <h4>Total Advance</h4><i class="fa-solid fa-piggy-bank"></i><div class="num" id="pdfTotalAdvance">₹0</div>
+          </div>
+          <div class="sum-box c-absent">
+            <h4>Total Pending</h4><i class="fa-solid fa-circle-exclamation"></i><div class="num" id="pdfTotalPending">₹0</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="footer-section">
+        <div class="sign-box">
+          <p>Prepared By</p>
+          <p><strong id="pdfPreparedBy" style="color: var(--primary); font-size: 14px;">Admin</strong></p>
+          <p>( Staff )</p>
+        </div>
+        <div class="stamp"><span class="stamp-text">SHIV SHAKTI</span><span class="stamp-main">SST</span><span class="stamp-text">★★★</span></div>
+        <div class="sign-box"><p>Authorized Signature</p><div class="sign-line">( Signature )</div></div>
+      </div>
+
+    </div>
+
+    <!-- BOTTOM BAR -->
+    <div class="bottom-bar">
+      <div>Thank you for trusting us in your child's education.</div>
+      <div><i class="fa-solid fa-location-dot"></i> Sultanpur Dabas Near Chameli Mandir, Delhi</div>
+      <div><i class="fa-solid fa-phone"></i> +919953142163</div>
+      <div><i class="fa-regular fa-envelope"></i> amitkumart5556@gmail.com</div>
+    </div>
+  </div>
+
+  <!-- FIREBASE SCRIPT -->
+  <script type="module">
+    import { doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+    import { db } from "./firebase.js";
+
+    async function loadStudentData() {
+      const params = new URLSearchParams(window.location.search);
+      const studentId = params.get('studentId');
+      
+      const now = new Date();
+      let targetMonth = params.get('month');
+      if (!targetMonth) {
+        targetMonth = now.getFullYear() + "-" + String(now.getMonth() + 1).padStart(2, '0');
+      }
+
+      const storedName = localStorage.getItem("userName") || localStorage.getItem("currentUserEmail");
+      if(storedName) {
+        document.getElementById("pdfPreparedBy").textContent = storedName.split('@')[0].toUpperCase();
+      }
+
+      if (!studentId) return;
+
+      try {
+        const snap = await getDoc(doc(db, "students", studentId));
+        let studentData = null;
+        if (snap.exists()) {
+          studentData = snap.data();
+          
+          const photoBox = document.getElementById('pdfStudentPhotoBox');
+          if (studentData.photoUrl && photoBox) {
+            photoBox.innerHTML = `<img src="${studentData.photoUrl}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;" alt="Student Photo">`;
+          }
+
+          document.getElementById('pdfStudentName').textContent = `: ${studentData.name || '-'}`;
+          document.getElementById('pdfAdmissionDate').textContent = `: ${studentData.admissionDate || '-'}`;
+          document.getElementById('pdfStudentId').textContent = `: ${studentData.studentCode || '-'}`;
+          document.getElementById('pdfMonthlyFee').textContent = `: ₹ ${studentData.monthlyFee || '0'}`;
+          document.getElementById('pdfClassName').textContent = `: ${studentData.className || '-'}`;
+          
+          let feeDay = studentData.feeDueDay ? `${studentData.feeDueDay}th of Month` : '-';
+          document.getElementById('pdfFeeDueDay').textContent = `: ${feeDay}`;
+          
+          document.getElementById('rDate').textContent = now.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+          document.getElementById('rTime').textContent = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+          
+          const monthDate = new Date(targetMonth + "-01");
+          document.getElementById('pdfMonthBadge').textContent = monthDate.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' }).toUpperCase();
+        }
+
+        // 1. ATTENDANCE LOAD
+        const attendanceSnap = await getDocs(collection(db, "attendance"));
+        let attendanceList = [];
+        
+        attendanceSnap.forEach(aDoc => {
+          const data = aDoc.data();
+          if (data.date && data.date.startsWith(targetMonth) && data.records && Array.isArray(data.records)) {
+            const studentRecord = data.records.find(r => r.studentId === studentId);
+            if (studentRecord) {
+              attendanceList.push({
+                date: data.date,
+                shift: data.shift || 'Morning',
+                status: studentRecord.status,
+                holidayReason: data.holidayReason || "-"
+              });
+            }
+          }
+        });
+
+        attendanceList.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+        let tbodyHtml = '';
+        let pCount = 0, aCount = 0, hCount = 0;
+
+        if (attendanceList.length === 0) {
+          tbodyHtml = '<tr><td colspan="6">No attendance records found for this month.</td></tr>';
+        } else {
+          attendanceList.forEach(item => {
+            const d = new Date(item.date);
+            const dateStr = d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+            const dayStr = d.toLocaleDateString('en-IN', { weekday: 'short' });
+            
+            let statusHtml = '';
+            if (item.status === 'P') { statusHtml = '<span class="status-chip status-p"><span class="status-icon">P</span> Present</span>'; pCount++; } 
+            else if (item.status === 'A') { statusHtml = '<span class="status-chip status-a"><span class="status-icon">A</span> Absent</span>'; aCount++; } 
+            else if (item.status === 'H') { statusHtml = '<span class="status-chip status-h"><span class="status-icon">H</span> Holiday</span>'; hCount++; }
+            else if (item.status === 'S') { statusHtml = '<span class="status-chip status-h"><span class="status-icon">S</span> Sunday</span>'; hCount++; }
+
+            let remark = (item.status === 'H' || item.status === 'S') ? item.holidayReason : '-';
+
+            tbodyHtml += `<tr><td>${dateStr}</td><td>${dayStr}</td><td>${item.shift}</td><td>${statusHtml}</td><td>Admin</td><td>${remark}</td></tr>`;
+          });
+        }
+
+        document.getElementById('pdfAttendanceTableBody').innerHTML = tbodyHtml;
+        const totalWorkingDays = pCount + aCount;
+        const perc = totalWorkingDays > 0 ? ((pCount / totalWorkingDays) * 100).toFixed(2) : 0;
+        
+        document.getElementById('pdfTotalPresent').textContent = pCount;
+        document.getElementById('pdfTotalAbsent').textContent = aCount;
+        document.getElementById('pdfTotalHoliday').textContent = hCount;
+        document.getElementById('pdfTotalDays').textContent = attendanceList.length;
+        document.getElementById('pdfTotalRecordsCount').textContent = `( Total Records : ${attendanceList.length} Days )`;
+        document.getElementById('pdfAttendancePerc').textContent = `${perc}%`;
+
+
+        // 2. FEES LOAD (FIXED LOGIC)
+        const feeSnap = await getDocs(collection(db, "fees"));
+        let feeRecords = [];
+        let totalPaid = 0, totalAdvance = 0, totalPending = 0;
+
+        const stuCode = (studentData && studentData.studentCode) ? String(studentData.studentCode).trim() : "";
+
+        feeSnap.forEach(fDoc => {
+          const data = fDoc.data();
+          const fDocId = String(data.studentDbId || "").trim();
+          const fStuId = String(data.studentId || "").trim();
+
+          // Check either Firestore Document ID or 4-digit Student Code (NO targetMonth restriction)
+          const isMatch = (fDocId === studentId) || (fStuId === studentId) || (stuCode && fStuId === stuCode);
+
+          if (isMatch) {
+            feeRecords.push(data);
+            totalPaid += Number(data.paidAmount ?? data.amount ?? 0);
+            totalAdvance += Number(data.advanceAmount ?? 0);
+            totalPending += Number(data.pendingAmount ?? 0);
+          }
+        });
+
+        // Agar bache ka koi payment nahi hai, toh Monthly Fee ko Total Pending bana do
+        if (feeRecords.length === 0 && studentData && Number(studentData.monthlyFee || 0) > 0) {
+          totalPending = Number(studentData.monthlyFee || 0);
+        }
+
+        feeRecords.sort((a, b) => new Date(a.paymentDate || 0) - new Date(b.paymentDate || 0));
+
+        let feeHtml = '';
+        if (feeRecords.length === 0) {
+          feeHtml = '<tr><td colspan="5">No fee records found for this student.</td></tr>';
+        } else {
+          feeRecords.forEach(fee => {
+            feeHtml += `
+              <tr>
+                <td>${fee.paymentDate || '-'}</td>
+                <td>${fee.feeMonth || fee.month || '-'}</td>
+                <td style="color: #10b981; font-weight: bold;">₹${Number(fee.paidAmount || fee.amount || 0)}</td>
+                <td style="color: #f59e0b;">₹${Number(fee.advanceAmount || 0)}</td>
+                <td style="color: #ef4444;">₹${Number(fee.pendingAmount || 0)}</td>
+              </tr>
+            `;
+          });
+        }
+
+        document.getElementById('pdfFeeTableBody').innerHTML = feeHtml;
+        document.getElementById('pdfTotalPaid').textContent = `₹${totalPaid}`;
+        document.getElementById('pdfTotalAdvance').textContent = `₹${totalAdvance}`;
+        document.getElementById('pdfTotalPending').textContent = `₹${totalPending}`;
+
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
+    loadStudentData();
+  </script>
+</body>
+</html>

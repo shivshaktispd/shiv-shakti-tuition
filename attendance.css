@@ -1,0 +1,369 @@
+/* ==========================================
+   MODERN ATTENDANCE UI (Edu-Pro Theme)
+   ========================================== */
+
+body {
+  background-color: var(--bg-color, #f8fafc);
+  font-family: 'Inter', sans-serif;
+  color: var(--text-main, #1e293b);
+  padding: 20px;
+  /* Override main body settings for iframe compatibility */
+  height: auto;
+  overflow: auto;
+  display: block;
+}
+
+.attendance-card {
+  background: var(--card-bg, #ffffff);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+  border: 1px solid var(--border, #e2e8f0);
+  margin-bottom: 24px;
+}
+
+.section-header h2 {
+  font-size: 18px;
+  color: var(--primary, #0a1d3f);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.section-header p {
+  font-size: 13px;
+  color: var(--text-muted, #64748b);
+  margin-bottom: 20px;
+}
+
+.attendance-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .attendance-controls { 
+    grid-template-columns: 1fr; 
+  }
+}
+
+.attendance-field label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text-main);
+}
+
+.attendance-field input,
+.attendance-field select,
+.attendance-field textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  outline: none;
+  transition: 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.attendance-field input:focus,
+.attendance-field select:focus,
+.attendance-field textarea:focus {
+  border-color: var(--primary, #0a1d3f);
+  box-shadow: 0 0 0 3px rgba(10, 29, 63, 0.1);
+}
+
+/* Shift Buttons */
+.shift-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.shift-btn {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #ccc;
+  background: #f8fafc;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: 0.2s;
+}
+
+.shift-btn.active {
+  background: var(--primary, #0a1d3f);
+  color: white;
+  border-color: var(--primary, #0a1d3f);
+  box-shadow: 0 4px 10px rgba(10,29,63,0.2);
+}
+
+/* Action Buttons */
+.action-btn {
+  background: var(--primary, #0a1d3f);
+  color: white;
+  border: none;
+  padding: 14px 20px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  transition: 0.2s;
+}
+
+.action-btn:hover { 
+  background: var(--primary-hover, #163262); 
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid #cbd5e1;
+  color: var(--text-main);
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: 0.2s;
+}
+
+.btn-outline:hover { 
+  background: #f1f5f9; 
+}
+
+/* Icons & Animations */
+.material-symbols-rounded { 
+  font-size: 20px; 
+}
+
+@keyframes spin { 
+  100% { transform: rotate(360deg); } 
+}
+.spin-icon { 
+  animation: spin 1s linear infinite; 
+}
+/* ==========================================
+   TOAST NOTIFICATION (Success / Error Popup)
+   ========================================== */
+#customToast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: #10b981;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  z-index: 1000;
+  font-weight: 600;
+  font-size: 14px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+#customToast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+/* ==========================================
+   ATTENDANCE SHIFT BUTTONS - FIXED
+   Morning / Evening / All Students
+========================================== */
+
+.shift-buttons {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+  width: 100% !important;
+  align-items: stretch !important;
+}
+
+.shift-btn {
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 64px !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  gap: 8px !important;
+
+  padding: 12px 10px !important;
+
+  border: 1.5px solid #cbd5e1 !important;
+  border-radius: 14px !important;
+
+  background: #ffffff !important;
+  color: #64748b !important;
+
+  font-family: inherit !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+
+  white-space: nowrap !important;
+  overflow: hidden !important;
+
+  cursor: pointer !important;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.15s ease !important;
+}
+
+.shift-btn .material-symbols-rounded {
+  flex: 0 0 auto !important;
+  font-size: 25px !important;
+  line-height: 1 !important;
+}
+
+.shift-btn:hover {
+  border-color: var(--primary) !important;
+  color: var(--primary) !important;
+  transform: translateY(-1px) !important;
+}
+
+.shift-btn.active {
+  background: var(--primary) !important;
+  color: #ffffff !important;
+  border-color: var(--primary) !important;
+
+  box-shadow:
+    0 7px 18px rgba(15, 42, 82, 0.20) !important;
+}
+
+.shift-btn.active:hover {
+  color: #ffffff !important;
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 600px) {
+
+  .shift-buttons {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  .shift-btn {
+    min-height: 60px !important;
+
+    padding: 10px 5px !important;
+
+    gap: 5px !important;
+
+    font-size: 14px !important;
+  }
+
+  .shift-btn .material-symbols-rounded {
+    font-size: 22px !important;
+  }
+
+}
+
+
+/* ==========================================
+   VERY SMALL MOBILE
+========================================== */
+
+@media (max-width: 380px) {
+
+  .shift-buttons {
+    gap: 6px !important;
+  }
+
+  .shift-btn {
+    min-height: 56px !important;
+
+    padding: 8px 3px !important;
+
+    font-size: 13px !important;
+  }
+
+  .shift-btn .material-symbols-rounded {
+    font-size: 20px !important;
+  }
+
+}
+/* ==========================================
+   FIX ALL STUDENTS BUTTON TEXT
+========================================== */
+
+.shift-buttons .shift-btn {
+  overflow: visible !important;
+  white-space: nowrap !important;
+}
+
+#allStudentsBtn {
+  min-width: 145px !important;
+  padding-left: 12px !important;
+  padding-right: 12px !important;
+}
+
+#allStudentsBtn .material-symbols-rounded {
+  font-size: 22px !important;
+  flex-shrink: 0 !important;
+}
+
+
+/* MOBILE */
+@media (max-width: 600px) {
+
+  .shift-buttons {
+    grid-template-columns: 1fr 1fr 1.25fr !important;
+    gap: 8px !important;
+  }
+
+  #allStudentsBtn {
+    min-width: 0 !important;
+    font-size: 14px !important;
+    padding-left: 7px !important;
+    padding-right: 7px !important;
+  }
+
+  #allStudentsBtn .material-symbols-rounded {
+    font-size: 20px !important;
+  }
+
+}
+
+
+/* VERY SMALL MOBILE */
+@media (max-width: 380px) {
+
+  .shift-buttons {
+    grid-template-columns: 1fr 1fr 1.3fr !important;
+    gap: 6px !important;
+  }
+
+  #allStudentsBtn {
+    font-size: 13px !important;
+  }
+
+}
